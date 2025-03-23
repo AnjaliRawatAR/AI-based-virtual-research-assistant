@@ -1,0 +1,102 @@
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import '../styles/Login.css';
+
+const Signup = () => {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Handle signup logic here
+    console.log('Signup attempt with:', formData);
+    // After successful signup, redirect to OTP verification
+    navigate('/verify-email');
+  };
+
+  return (
+    <div className="signup-container">
+      <div className="login-box">
+        <h2>Create Account</h2>
+        <p className="login-subtitle">Please fill in your details to sign up</p>
+        
+        <form onSubmit={handleSubmit} className="login-form">
+          <div className="form-group">
+            <label htmlFor="name">Full Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Enter your full name"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+          
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Create a password"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="confirmPassword">Confirm Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              placeholder="Confirm your password"
+              required
+            />
+          </div>
+          
+          <button type="submit" className="login-button">
+            Sign Up
+          </button>
+        </form>
+        
+        <p className="signup-prompt">
+          Already have an account? <Link to="/login" className="signup-link">Login</Link>
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default Signup; 
