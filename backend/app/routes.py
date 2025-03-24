@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
-from app.search import search_papers
-from app.summarizer import generate_summary
+from search import search_papers
+from summarizer import generate_summary
 
 router = APIRouter()
 

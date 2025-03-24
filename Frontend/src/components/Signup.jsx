@@ -11,6 +11,11 @@ const Signup = () => {
     confirmPassword: ''
   });
 
+  const validatePasswords = () => {
+    return formData.password === formData.confirmPassword;
+  };
+   
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
@@ -19,12 +24,38 @@ const Signup = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if(!validatePasswords()){
     // Handle signup logic here
     console.log('Signup attempt with:', formData);
     // After successful signup, redirect to OTP verification
-    navigate('/verify-email');
+    try{
+      const response = await fetch('http://localhost:8000/api/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+      const data = await response.json();
+      console.log(data);
+    }catch(err){
+      console.log(err);
+    }
+
+    if(response.status === 201){
+      navigate('/verify-email')
+    }else{
+      alert(data.error);
+    }
+    
+  }else{
+    alert('Passwords do not match');
+  }
+
+    
+
   };
 
   return (

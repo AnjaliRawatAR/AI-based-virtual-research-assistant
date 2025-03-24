@@ -1,5 +1,6 @@
 from fastapi import FastAPI
-from app.routes import router
+from routes import router
+import uvicorn
 
 app = FastAPI(title="AI Research Assistant", description="Search, Summarize, and Cite Papers")
 
@@ -11,6 +12,5 @@ def home():
     return {"message": "Welcome to the AI Research Assistant API"}
 
 if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, port=8000)
 
