@@ -5,11 +5,19 @@ import '../styles/Dashboard.css';
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
 
-  const handleSearch = (e) => {
+  const handleSearch = async(e) => {
     e.preventDefault();
-    // TODO: Implement search functionality
-    console.log('Searching for:', searchQuery);
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/search?query=${searchQuery}`);
+        const data = await response.json();
+        console.log("Search results:", data);
+        setSearchResults(data.results);
+    } catch (error) {
+        console.error("Error fetching search results:", error);
+    }
+    // TODO: Implement search functionality;
   };
 
   return (
