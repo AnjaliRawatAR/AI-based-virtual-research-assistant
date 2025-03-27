@@ -1,4 +1,29 @@
 import requests
+import xml.etree.ElementTree as ET
+
+def search_papers(query, page=1, page_size=5):
+    """Search for papers using ArXiv API"""
+    arxiv_url = f"http://export.arxiv.org/api/query?search_query=all:{query}&max_results={page_size}&start={(page-1)*page_size}"
+    response = requests.get(arxiv_url)
+
+    if response.status_code != 200:
+        return {"error": "Failed to fetch papers"}
+
+    root = ET.fromstring(response.text)
+    papers = []
+    
+    for entry in root.findall("{http://www.w3.org/2005/Atom}entry"):
+        title = entry.find("{http://www.w3.org/2005/Atom}title").text
+        summary = entry.find("{http://www.w3.org/2005/Atom}summary").text
+        link = entry.find("{http://www.w3.org/2005/Atom}id").text
+
+        papers.append({"title": title, "summary": summary, "link": link})
+
+    return {"arxiv_results": papers}
+
+
+'''
+import requests
 import os
 from dotenv import load_dotenv
 
@@ -22,3 +47,4 @@ def search_papers(query, page=1, page_size=5):
         "arxiv_results": arxiv_response.text if arxiv_response.status_code == 200 else "Error"
         # "semantic_results": semantic_response.json() if semantic_response.status_code == 200 else "Error"
     }
+'''
