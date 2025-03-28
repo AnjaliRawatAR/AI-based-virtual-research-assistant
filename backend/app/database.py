@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, String, Integer
+from sqlalchemy import create_engine, Column, String, Integer, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -11,8 +11,10 @@ Base = declarative_base()
 class ResearchPaper(Base):
     __tablename__ = "papers"
 
-    id = Column(String, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
-    summary = Column(String)
+    summary = Column(Text)
+    link = Column(String, unique=True)
+    embedding = Column(Text)  # Store embeddings for FAISS
 
 Base.metadata.create_all(bind=engine)
