@@ -31,7 +31,7 @@ const Signup = () => {
     console.log('Signup attempt with:', formData);
     // After successful signup, redirect to OTP verification
     try{
-      const response = await fetch('http://localhost:8000/api/auth/signup', {
+      const response = await fetch('http://localhost:8000/auth/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
