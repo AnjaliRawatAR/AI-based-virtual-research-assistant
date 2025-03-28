@@ -11,11 +11,14 @@ const Dashboard = () => {
   const handleSearch = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    console.log(searchQuery);
     try {
       // TODO: Replace with actual API call
-      const response = await fetch(`http://localhost:8000/api/search?query=${searchQuery}`);
+      const response = await fetch(`http://localhost:8000/search?query=${searchQuery}`);
       const data = await response.json();
+      console.log(data);
       setSearchResults(data);
+      console.log(searchResults);
     } catch (error) {
       console.error('Error fetching results:', error);
     } finally {
@@ -100,15 +103,24 @@ const Dashboard = () => {
                     />
                     <button type="submit" className="search-button">
                       <i className="fas fa-search"></i>
+                      Search
                     </button>
                   </div>
                   <div className="search-suggestions">
                     <span className="suggestion-label">Popular searches:</span>
                     <div className="suggestion-tags">
-                      <button className="suggestion-tag">Machine Learning</button>
-                      <button className="suggestion-tag">Data Analysis</button>
-                      <button className="suggestion-tag">AI Research</button>
-                      <button className="suggestion-tag">Scientific Papers</button>
+                      <button className="suggestion-tag" onClick={() => setSearchQuery('Machine Learning')}>
+                        Machine Learning
+                        </button>
+                      <button className="suggestion-tag" onClick={() => setSearchQuery('Data Analysis')}>
+                        Data Analysis
+                      </button>
+                      <button className="suggestion-tag" onClick={() => setSearchQuery('AI Research')}>
+                        AI Research
+                      </button>
+                      <button className="suggestion-tag" onClick={() => setSearchQuery('Scientific Papers')}>
+                        Scientific Papers
+                      </button>
                     </div>
                   </div>
                 </form>

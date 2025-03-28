@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import '../styles/Signup.css';
+import '../styles/Login.css';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -10,79 +10,74 @@ const Signup = () => {
     password: '',
     confirmPassword: ''
   });
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+
+  const validatePasswords = () => {
+    return formData.password === formData.confirmPassword;
+  };
+   
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setLoading(true);
-
-    if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
-      setLoading(false);
-      return;
-    }
-
-    try {
+    if(!validatePasswords()){
+    // Handle signup logic here
+    console.log('Signup attempt with:', formData);
+    // After successful signup, redirect to OTP verification
+    try{
       const response = await fetch('http://localhost:8000/api/auth/signup', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          password: formData.password,
-        }),
+        body: JSON.stringify(formData)
       });
-
       const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Something went wrong');
-      }
-
-      // Store user data in localStorage
-      localStorage.setItem('user', JSON.stringify({
-        name: data.name,
-        email: data.email,
-        token: data.token
-      }));
-
-      // Navigate to dashboard
-      navigate('/dashboard');
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+      console.log(data);
+    }catch(err){
+      console.log(err);
     }
+
+    if(response.status === 201){
+      navigate('/verify-email')
+    }else{
+      alert(data.error);
+    }
+    
+  }else{
+    alert('Passwords do not match');
+  }
+
+    
+
   };
 
   return (
     <div className="signup-container">
       <div className="login-box">
         <h2>Create Account</h2>
-        {error && <div className="error-message">{error}</div>}
+        <p className="login-subtitle">Please fill in your details to sign up</p>
+        
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-group">
-            <label htmlFor="name">Name</label>
+            <label htmlFor="name">Full Name</label>
             <input
               type="text"
               id="name"
               name="name"
               value={formData.name}
               onChange={handleChange}
+              placeholder="Enter your full name"
               required
             />
           </div>
+
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <input
@@ -91,9 +86,11 @@ const Signup = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
+              placeholder="Enter your email"
               required
             />
           </div>
+          
           <div className="form-group">
             <label htmlFor="password">Password</label>
             <input
@@ -102,9 +99,11 @@ const Signup = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
+              placeholder="Create a password"
               required
             />
           </div>
+
           <div className="form-group">
             <label htmlFor="confirmPassword">Confirm Password</label>
             <input
@@ -113,20 +112,19 @@ const Signup = () => {
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
+              placeholder="Confirm your password"
               required
             />
           </div>
-          <button 
-            type="submit" 
-            className="signup-button"
-            disabled={loading}
-          >
-            {loading ? 'Creating Account...' : 'Sign Up'}
+          
+          <button type="submit" className="login-button">
+            Sign Up
           </button>
         </form>
-        <div className="login-link">
-          Already have an account? <Link to="/login">Login</Link>
-        </div>
+        
+        <p className="signup-prompt">
+          Already have an account? <Link to="/login" className="signup-link">Login</Link>
+        </p>
       </div>
     </div>
   );
