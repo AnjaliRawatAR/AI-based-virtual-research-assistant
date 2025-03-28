@@ -26,37 +26,73 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(!validatePasswords()){
-    // Handle signup logic here
-    console.log('Signup attempt with:', formData);
-    // After successful signup, redirect to OTP verification
-    try{
+    if (!validatePasswords()) {
+      alert('Passwords do not match');
+      return;
+    }
+  
+    const payload = {
+      name: formData.name,
+      email: formData.email,
+      password: formData.password,
+    };
+  
+    console.log('Sending payload:', payload); // Debugging: Log the payload
+  
+    try {
       const response = await fetch('http://localhost:8000/auth/signup', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(payload),
       });
+  
       const data = await response.json();
-      console.log(data);
-    }catch(err){
-      console.log(err);
+      console.log('Response from backend:', data); // Debugging: Log the backend response
+  
+      if (response.ok) {
+        alert('Signup successful! Redirecting to login...');
+        navigate('/login');
+      } else {
+        alert(data.detail || 'Signup failed');
+      }
+    } catch (error) {
+      console.error('Error during signup:', error);
+      alert('An error occurred. Please try again.');
     }
-
-    if(response.status === 201){
-      navigate('/verify-email')
-    }else{
-      alert(data.error);
-    }
-    
-  }else{
-    alert('Passwords do not match');
-  }
-
-    
-
   };
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if(!validatePasswords()){
+  //   // Handle signup logic here
+    
+  //   console.log('Signup attempt with:', formData);
+  //   // After successful signup, redirect to OTP verification
+  //   try{
+  //     const response = await fetch('http://localhost:8000/auth/signup', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify(formData)
+  //     });
+  //     const data = await response.json();
+  //     console.log(data);
+  //   }catch(err){
+  //     console.log(err);
+  //   }
+
+  //   if(response.status === 201){
+  //     navigate('/verify-email')
+  //   }else{
+  //     alert(data.error);
+  //   }
+    
+  // }else{
+  //   alert('Passwords do not match');
+  // }
+  // };
 
   return (
     <div className="signup-container">
