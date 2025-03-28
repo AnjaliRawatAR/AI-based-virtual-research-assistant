@@ -4,6 +4,7 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import OtpVerification from './components/OtpVerification';
 import Dashboard from './components/Dashboard';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function HeroContent() {
   const navigate = useNavigate();
@@ -25,13 +26,19 @@ function AppContent() {
                     location.pathname === '/signup' || 
                     location.pathname === '/verify-email';
   const isDashboard = location.pathname === '/dashboard';
+  const user = JSON.parse(localStorage.getItem('user'));
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    window.location.href = '/';
+  };
 
   return (
     <div className="app">
       {/* Navbar - Always visible */}
       <nav className="navbar">
         <Link to="/" className="logo">AVRA</Link>
-        {!isDashboard && (
+        {!isDashboard && !isAuthPage && (
           <div className="nav-center">
             <a href="#features">Features</a>
             <a href="#about">About</a>
@@ -50,11 +57,26 @@ function AppContent() {
         </div>
       </nav>
 
+      {/* User Welcome Message */}
+      {user && (
+        <div className="user-welcome">
+          Welcome, {user.name}!
+          <button onClick={handleLogout} className="logout-btn">Logout</button>
+        </div>
+      )}
+
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/verify-email" element={<OtpVerification />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route 
+          path="/dashboard" 
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } 
+        />
         <Route path="/" element={
           <>
             {/* Hero Section */}

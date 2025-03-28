@@ -5,11 +5,22 @@ import '../styles/Dashboard.css';
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
-    // TODO: Implement search functionality
-    console.log('Searching for:', searchQuery);
+    setIsLoading(true);
+    try {
+      // TODO: Replace with actual API call
+      const response = await fetch(`http://localhost:8000/api/search?query=${searchQuery}`);
+      const data = await response.json();
+      setSearchResults(data);
+    } catch (error) {
+      console.error('Error fetching results:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -241,6 +252,37 @@ const Dashboard = () => {
               </div>
             </div>
           )}
+
+          {/* Results Section */}
+          <div className="results-section">
+            {isLoading ? (
+              <div className="loading">
+                <div className="spinner"></div>
+                <p>Searching for results...</p>
+              </div>
+            ) : searchResults.length > 0 ? (
+              <div className="results-grid">
+                {searchResults.map((result, index) => (
+                  <div key={index} className="result-card">
+                    <h3>{result.title}</h3>
+                    <p>{result.description}</p>
+                    <div className="result-meta">
+                      <span className="source">{result.source}</span>
+                      <span className="date">{result.date}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : searchQuery ? (
+              <div className="no-results">
+                <p>No results found for "{searchQuery}"</p>
+              </div>
+            ) : (
+              <div className="search-prompt">
+                <p>Enter a research query to get started</p>
+              </div>
+            )}
+          </div>
         </main>
       </div>
     </div>
