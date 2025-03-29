@@ -1,90 +1,105 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import '../styles/Login.css';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import "../styles/Login.css"; // Ensure correct path
 
 const Login = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8000/auth/login', {
-        method: 'POST',
+      const response = await fetch("http://localhost:8000/auth/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password }),
       });
-      
+
       const data = await response.json();
-      
+
       if (response.ok) {
-        // Store user data in localStorage
-        localStorage.setItem('user', JSON.stringify({
-          name: data.user.name,
-          email: data.user.email
-        }));
-        navigate('/dashboard');
+        localStorage.setItem(
+          "user",
+          JSON.stringify({ name: data.user.name, email: data.user.email })
+        );
+        navigate("/dashboard");
       } else {
-        alert(data.error || 'Login failed');
+        alert(data.error || "Login failed");
       }
     } catch (error) {
-      console.error('Login error:', error);
-      alert('Login failed. Please try again.');
+      console.error("Login error:", error);
+      alert("Login failed. Please try again.");
     }
   };
 
   return (
-    <div className="login-container">
-      <div className="login-box">
-        <h2>Welcome Back</h2>
-        <p className="login-subtitle">Please enter your details to sign in</p>
-        
-        <form onSubmit={handleSubmit} className="login-form">
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              required
-            />
-          </div>
-          
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              required
-            />
-          </div>
-          
-          <div className="form-options">
-            <label className="remember-me">
-              <input type="checkbox" /> Remember me
-            </label>
-            <Link to="/forgot-password" className="forgot-password">Forgot password?</Link>
-          </div>
-          
-          <button type="submit" className="login-button">
-            Sign In
-          </button>
-        </form>
-        
-        <p className="signup-prompt">
-          Don't have an account? <Link to="/signup" className="signup-link">Sign up</Link>
-        </p>
+    <div className="login-page">
+      <div className="login-container">
+        <div className="left-section">
+          <h1>WELCOME</h1>
+          <p>AVRA</p>
+          <p>
+           AI-Based Virtual Research Assistant
+          </p>
+          <div className="circle small"></div>
+          <div className="circle large"></div>
+        </div>
+        <div className="right-section">
+          <h2>Log in</h2>
+          <p>Please enter your details to sign in</p>
+
+          <form onSubmit={handleSubmit} className="login-form">
+            <div className="input-group">
+              <input
+                type="email"
+                placeholder="User Name"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="input-group">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <span
+                className="icon"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? "🙈" : "👁"}
+              </span>
+            </div>
+
+            <div className="options">
+              <label>
+                <input type="checkbox" /> Remember me
+              </label>
+              <Link to="/forgot-password">Forgot password?</Link>
+            </div>
+
+            <button type="submit" className="btn-primary">
+              Sign In
+            </button>
+
+            <button className="btn-secondary">Sign in with other</button>
+
+            <p className="signup-link">
+              Don’t have an account? <Link to="/signup">Sign Up</Link>
+            </p>
+          </form>
+        </div>
       </div>
     </div>
   );
 };
 
-export default Login; 
+export default Login;
