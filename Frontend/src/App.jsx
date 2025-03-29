@@ -2,9 +2,10 @@ import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate 
 import './App.css'
 import Login from './components/Login';
 import Signup from './components/Signup';
-import OtpVerification from './components/OtpVerification';
 import Dashboard from './components/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
+import aiAssistantImage from './assets/images/ai-virtual-assistant.jpg';
+
 
 function HeroContent() {
   const navigate = useNavigate();
@@ -22,9 +23,7 @@ function HeroContent() {
 
 function AppContent() {
   const location = useLocation();
-  const isAuthPage = location.pathname === '/login' || 
-                    location.pathname === '/signup' || 
-                    location.pathname === '/verify-email';
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
   const isDashboard = location.pathname === '/dashboard';
   const user = JSON.parse(localStorage.getItem('user'));
 
@@ -68,7 +67,6 @@ function AppContent() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/verify-email" element={<OtpVerification />} />
         <Route 
           path="/dashboard" 
           element={
@@ -80,7 +78,15 @@ function AppContent() {
         <Route path="/" element={
           <>
             {/* Hero Section */}
-            <section className="hero">
+            <section 
+              className="hero"
+              style={{
+                backgroundImage: `url(${aiAssistantImage})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat'
+              }}
+            >
               <HeroContent />
             </section>
 

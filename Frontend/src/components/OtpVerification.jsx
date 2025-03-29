@@ -1,60 +1,67 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import '../styles/Login.css';
+import { useNavigate, useLocation } from 'react-router-dom';
+import '../styles/OtpVerification.css';
 
 const OtpVerification = () => {
-  const [otp, setOtp] = useState(['', '', '', '', '', '']);
-  
-  const handleChange = (element, index) => {
-    if (isNaN(element.value)) return false;
+  const [otp, setOtp] = useState('');
+  const navigate = useNavigate();
+  const location = useLocation();
+  const email = location.state?.email;
 
-    setOtp([...otp.map((d, idx) => (idx === index ? element.value : d))]);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // TODO: Add API call to verify OTP
+      const response = await fetch('http://localhost:8000/api/auth/verify-otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, otp }),
+      });
 
-    // Focus next input
-    if (element.value !== '' && index < 5) {
-      const nextInput = element.parentElement.nextElementSibling?.querySelector('input');
-      if (nextInput) {
-        nextInput.focus();
+      if (response.ok) {
+        // If OTP is verified, navigate to dashboard
+        navigate('/dashboard');
+      } else {
+        alert('Invalid OTP. Please try again.');
       }
+    } catch (error) {
+      console.error('Error verifying OTP:', error);
+      alert('Error verifying OTP. Please try again.');
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const otpValue = otp.join('');
-    console.log('Verifying OTP:', otpValue);
-    // Add your OTP verification logic here
-  };
-
   return (
-    <div className="signup-container">
-      <div className="login-box">
-        <h2>Verify Your Email</h2>
-        <p className="login-subtitle">Please enter the 6-digit code sent to your email</p>
-        
-        <form onSubmit={handleSubmit} className="login-form">
-          <div className="otp-container">
-            {otp.map((data, index) => (
-              <div className="otp-input-box" key={index}>
-                <input
-                  type="text"
-                  maxLength="1"
-                  value={data}
-                  onChange={e => handleChange(e.target, index)}
-                  onFocus={e => e.target.select()}
-                />
-              </div>
-            ))}
+    <div className="otp-page">
+      <div className="otp-container">
+        <div className="otp-box">
+          <h2>Verify Your Email</h2>
+          <p className="otp-description">
+            We've sent a verification code to your email address{' '}
+            <strong>{email}</strong>
+          </p>
+          <form onSubmit={handleSubmit} className="otp-form">
+            <div className="form-group">
+              <label>Enter Verification Code</label>
+              <input
+                type="text"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                placeholder="Enter 6-digit code"
+                maxLength="6"
+                required
+              />
+            </div>
+            <button type="submit" className="verify-button">
+              Verify Email
+            </button>
+          </form>
+          <div className="resend-link">
+            Didn't receive the code?{' '}
+            <button className="resend-button">Resend</button>
           </div>
-          
-          <button type="submit" className="login-button">
-            Verify Email
-          </button>
-        </form>
-        
-        <p className="signup-prompt">
-          Didn't receive the code? <button className="resend-btn">Resend</button>
-        </p>
+        </div>
       </div>
     </div>
   );

@@ -85,13 +85,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url('/images/ai-virtual-assistant.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   position: relative;
   width: 100%;
-  padding-top: 80px; /* Account for fixed navbar */
+  padding-top: 80px;
+  background-color: #2563eb;
 }
 
 .hero::before {
@@ -102,9 +102,9 @@ body {
   right: 0;
   bottom: 0;
   background: linear-gradient(
-    to bottom,
-    rgba(220, 38, 38, 0.85),  /* Darker red */
-    rgba(239, 68, 68, 0.65)   /* Lighter red */
+    135deg,
+    rgba(37, 99, 235, 0.4),
+    rgba(59, 130, 246, 0.5)
   );
   z-index: 1;
 }
@@ -113,50 +113,51 @@ body {
   position: relative;
   z-index: 2;
   text-align: center;
-  color: white;
-  padding: 2rem;
   max-width: 800px;
   margin: 0 auto;
-  width: 100%;
+  padding: 2.5rem;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
 }
 
 .hero-content h1 {
   font-size: 4rem;
   margin-bottom: 1.5rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
-  font-weight: 700;
-  background: linear-gradient(45deg, #ffffff, #fecaca);  /* White to light red */
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+  color: #1e3a8a;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
 .hero-content p {
   font-size: 1.4rem;
   margin-bottom: 2.5rem;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
-  line-height: 1.6;
-  color: #f8fafc;
+  line-height: 1.7;
+  color: #1f2937;
+  font-weight: 500;
 }
 
 .cta-button {
-  padding: 1.2rem 2.5rem;
+  padding: 1.2rem 2.8rem;
   font-size: 1.2rem;
-  background: linear-gradient(45deg, #dc2626, #ef4444);  /* Red gradient */
+  background: linear-gradient(45deg, #2563eb, #3b82f6);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-weight: 600;
-  box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2);
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
 }
 
 .cta-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(220, 38, 38, 0.3);
-  background: linear-gradient(45deg, #ef4444, #dc2626);  /* Reversed red gradient */
+  background: linear-gradient(45deg, #1d4ed8, #2563eb);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
 }
 
 /* Features section */
@@ -375,12 +376,13 @@ footer {
     display: none;
   }
   
-  .hero-content h1 {
-    font-size: 3rem;
+  .hero-content {
+    margin: 1rem;
+    padding: 1.5rem;
   }
   
-  .hero-content p {
-    font-size: 1.2rem;
+  .hero-image {
+    max-width: 100%;
   }
   
   .features h2,
@@ -425,10 +427,15 @@ footer {
 }
 
 @media (max-width: 480px) {
+  .hero-content {
+    margin: 0.5rem;
+    padding: 1rem;
+  }
+
   .hero-content h1 {
     font-size: 2.5rem;
   }
-  
+
   .hero-content p {
     font-size: 1.1rem;
   }

@@ -23,11 +23,10 @@
   background: white;
   padding: 40px;
   border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 450px;
-  margin: 0 auto;
+  margin: 40px auto;
 }
 
 .login-box h2 {
@@ -110,8 +109,7 @@
   }
 
   .login-box {
-    padding: 32px 24px;
-    max-width: 400px;
+    margin: 30px auto;
   }
 
   .login-box h2 {
@@ -129,12 +127,11 @@
 
 @media (max-width: 480px) {
   .signup-container {
-    padding: 90px 12px 12px;
+    padding: 80px 12px 12px;
   }
 
   .login-box {
-    padding: 24px 20px;
-    max-width: 100%;
+    margin: 20px auto;
   }
 
   .login-box h2 {
