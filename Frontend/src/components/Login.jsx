@@ -24,7 +24,7 @@ const Login = () => {
       if (response.ok) {
         localStorage.setItem(
           "user",
-          JSON.stringify({ name: data.user.name, email: data.user.email })
+          JSON.stringify({ name: data.user.email, email: data.user.password })
         );
         navigate("/dashboard");
       } else {

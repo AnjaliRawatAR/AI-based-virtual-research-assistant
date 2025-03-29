@@ -29,6 +29,10 @@ class UserSignup(BaseModel):
     email: EmailStr
     password: str
 
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
+
 # Dependency to get the database session
 def get_db():
     db = SessionLocal()
@@ -55,6 +59,18 @@ def signup(user: UserSignup, db: Session = Depends(get_db)):
     db.refresh(new_user)
 
     return {"message": "User created successfully", "user_id": new_user.id}
+
+@app.post("/auth/login")
+def login(user: UserLogin, db: Session = Depends(get_db)):
+    db_user = db.query(User).filter(User.email == user.email).first()
+    if not db_user:
+        raise HTTPException(status_code=400, detail="User not found")
+
+    if not pwd_context.verify(user.password, db_user.password):
+        raise HTTPException(status_code=400, detail="Invalid password")
+
+    return {"message": "Login successful", "user": {"name": db_user.name, "email": db_user.email}}
+
 
 @app.get("/")
 def home():
