@@ -34,10 +34,8 @@ const Signup = () => {
     const payload = {
       name: formData.name,
       email: formData.email,
-      password: formData.password,
+      password: formData.password,  
     };
-  
-    console.log('Sending payload:', payload); // Debugging: Log the payload
   
     try {
       const response = await fetch('http://localhost:8000/auth/signup', {
@@ -49,8 +47,6 @@ const Signup = () => {
       });
   
       const data = await response.json();
-      console.log('Response from backend:', data); // Debugging: Log the backend response
-  
       if (response.ok) {
         alert('Signup successful! Redirecting to login...');
         navigate('/login');
@@ -62,6 +58,7 @@ const Signup = () => {
       alert('An error occurred. Please try again.');
     }
   };
+  
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
   //   if(!validatePasswords()){

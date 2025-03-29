@@ -1,23 +1,23 @@
-from sqlalchemy import create_engine, Column, String, Integer, DateTime
+from sqlalchemy import Column, Integer, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from datetime import datetime
 
-DATABASE_URL = "sqlite:///./papers.db"  # Update this to your database URL
+DATABASE_URL = "sqlite:///./users.db"  # Change to your database URL if using MySQL/PostgreSQL
 
-engine = create_engine(DATABASE_URL)
-SessionLocal = sessionmaker(bind=engine)
+engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})  # SQLite needs this
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
+# Define User model
 class User(Base):
     __tablename__ = "users"
-
+    
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
-    email = Column(String, unique=True, nullable=False)
+    email = Column(String, unique=True, index=True, nullable=False)
     password = Column(String, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
 
+# Create the database tables
 Base.metadata.create_all(bind=engine)
 
 # class ResearchPaper(Base):
