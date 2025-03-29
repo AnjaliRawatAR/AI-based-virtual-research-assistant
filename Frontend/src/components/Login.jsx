@@ -56,7 +56,7 @@ const Login = () => {
             <div className="input-group">
               <input
                 type="email"
-                placeholder="User Name"
+                placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -90,7 +90,7 @@ const Login = () => {
               Sign In
             </button>
 
-            <button className="btn-secondary">Sign in with other</button>
+            <button className="btn-secondary">Login with other</button>
 
             <p className="signup-link">
               Don’t have an account? <Link to="/signup">Sign Up</Link>
