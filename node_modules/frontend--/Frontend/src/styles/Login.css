@@ -1,0 +1,205 @@
+/* Ensure styles are applied only within the login page */
+.login-page {
+  background: linear-gradient(to bottom, #0052d4, #4364f7, #6fb1fc);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Login Container */
+.login-page .login-container {
+  display: flex;
+  max-width: 900px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  width: 90%;
+  position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+
+}
+
+/* Left Section */
+.login-page .left-section {
+  background: linear-gradient(to bottom, #004aad, #0066ff);
+  color: white;
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+  position: relative;
+}
+
+.login-page .left-section h1 {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.login-page .left-section p {
+  font-size: 14px;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+.login-page .circle {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+}
+
+.login-page .circle.small {
+  width: 80px;
+  height: 80px;
+  bottom: 20px;
+  left: 30px;
+}
+
+.login-page .circle.large {
+  width: 150px;
+  height: 150px;
+  top: 30px;
+  right: 30px;
+}
+
+/* Right Section */
+.login-page .right-section {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-page .right-section h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.login-page .right-section p {
+  font-size: 14px;
+  color: #6c757d;
+  margin-bottom: 20px;
+}
+
+/* Form */
+.login-page .login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.login-page .input-group {
+  position: relative;
+}
+
+.login-page .input-group input {
+  width: 100%;
+  padding: 12px 40px 12px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: 0.3s ease;
+}
+
+.login-page .input-group input:focus {
+  border-color: #004aad;
+}
+
+.login-page .input-group .icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #6c757d;
+  font-size: 16px;
+}
+
+/* Remember & Forgot Password */
+.login-page .options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+.login-page .options a {
+  text-decoration: none;
+  color: #004aad;
+  font-weight: bold;
+}
+
+/* Buttons */
+.login-page .btn-primary {
+  background: #004aad;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.login-page .btn-primary:hover {
+  background: #003580;
+}
+
+.login-page .btn-secondary {
+  background: none;
+  border: 1px solid #004aad;
+  color: #004aad;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.login-page .btn-secondary:hover {
+  background: #004aad;
+  color: white;
+}
+
+/* Signup Link */
+.login-page .signup-link {
+  margin-top: 15px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.login-page .signup-link a {
+  color: #004aad;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.login-page .signup-link a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .login-page .login-container {
+    flex-direction: column;
+    max-width: 100%;
+  }
+
+  .login-page .left-section {
+    display: none;
+  }
+
+  .login-page .right-section {
+    padding: 30px;
+  }
+}
