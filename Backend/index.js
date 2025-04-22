@@ -13,7 +13,7 @@ app.use(express.json());
 // Route: /search?query=your-topic
 app.get('/search', async (req, res) => {
   const query = req.query.query;
-  const apiUrl = `http://export.arxiv.org/api/query?search_query=all:${encodeURIComponent(query)}&start=0&max_results=5`;
+  const apiUrl = `http://export.arxiv.org/api/query?search_query=all:${encodeURIComponent(query)}&start=0&max_results=25`;
 
   try {
     const response = await axios.get(apiUrl);

@@ -7,6 +7,7 @@ const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [expandedIndexes, setExpandedIndexes] = useState([]);
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -274,30 +275,46 @@ const Dashboard = () => {
               </div>
             ) : searchResults.length > 0 ? (
               <div className="results-grid">
-                {searchResults.map((result, index) => (
-                  <div key={index} className="result-card">
+                {searchResults.map((result, index) => {
+                  const isExpanded = expandedIndexes.includes(index);
+                  const isLong = result.description.length > 300;
+                  const toggleExpand = () => {
+                    setExpandedIndexes(prev => prev.includes(index) ? prev.filter(i => i !== index): [...prev, index]
+                  );
+                };
+                return (
+                <div key={index} className="result-card">
+                  <a href={result.link} target="_blank" rel="noopener noreferrer">
                     <h3>{result.title}</h3>
-                    <p>{result.description}</p>
-                    <div className="result-meta">
-                      <span className="source">{result.source}</span>
-                      <span className="date">{result.date}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : searchQuery ? (
-              <div className="no-results">
-                <p>No results found for "{searchQuery}"</p>
-              </div>
-            ) : (
-              <div className="search-prompt">
-                <p>Enter a research query to get started</p>
-              </div>
-            )}
+                  </a>
+                  <p>{isExpanded || !isLong ? result.description : result.description.substring(0, 300) + '...'}</p>{isLong && ( <button className="read-more-button" onClick={toggleExpand}>
+                    {isExpanded ? 'Read Less' : 'Read More'}
+                  </button>
+              )}
+            <div className="result-meta">
+              <span className="source">{result.source}</span>
+              <span className="date">
+                {new Date(result.date).toLocaleDateString()}
+              </span>
+            </div>
           </div>
-        </main>
+        );
+      })}
+
       </div>
+        ) : searchQuery ? (
+            <div className="no-results">
+            <p>No results found for "{searchQuery}"</p>
+      </div>
+      ) : (
+        <div className="search-prompt">
+          <p>Enter a research query to get started</p>
+          </div>
+        )}
+        </div>
+      </main>
     </div>
+  </div>
   );
 };
 
