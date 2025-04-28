@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Dashboard.css';
+import Summarization from './Summarization';
+import KeyHighlights from './KeyHighlights';
+import PlagiarismDetector from './PlagiarismDetector';
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -41,6 +44,27 @@ const Dashboard = () => {
           >
             <i className="fas fa-home"></i>
             Overview
+          </button>
+          <button 
+            className={`nav-item ${activeTab === 'summarization' ? 'active' : ''}`}
+            onClick={() => setActiveTab('summarization')}
+          >
+            <i className="fas fa-align-left"></i>
+            Summarization
+          </button>
+          <button 
+            className={`nav-item ${activeTab === 'keyHighlights' ? 'active' : ''}`}
+            onClick={() => setActiveTab('keyHighlights')}
+          >
+            <i className="fas fa-lightbulb"></i>
+            Key Highlights
+          </button>
+          <button 
+            className={`nav-item ${activeTab === 'plagDetector' ? 'active' : ''}`}
+            onClick={() => setActiveTab('plagDetector')}
+          >
+            <i className="fas fa-copy"></i>
+            Plagiarism Detector
           </button>
           <button 
             className={`nav-item ${activeTab === 'research' ? 'active' : ''}`}
@@ -183,6 +207,27 @@ const Dashboard = () => {
             </div>
           )}
 
+          {/* Summarization Section */}
+          {activeTab === 'summarization' && (
+            <div className="summarization-section">
+              <Summarization />
+            </div>
+          )}
+
+          {/* Key Highlights Section */}
+          {activeTab === 'keyHighlights' && (
+            <div className="key-highlights-section">
+              <KeyHighlights />
+            </div>
+          )}
+
+          {/* Plagiarism Detector Section */}
+          {activeTab === 'plagDetector' && (
+            <div className="plagiarism-detector-section">
+              <PlagiarismDetector />
+            </div>
+          )}
+
           {/* Research Section */}
           {activeTab === 'research' && (
             <div className="research-section">
@@ -318,4 +363,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard; 
+export default Dashboard;
