@@ -53,13 +53,25 @@ const Summarization = () => {
       <div className="summarization-section">
         <h2>Summarization Tool</h2>
         <form onSubmit={handleSummarize} className="summarization-form">
-          <textarea
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            placeholder="Paste your text here to summarize..."
-            className="summarization-textarea"
-            rows="6"
-          ></textarea>
+          <div className="textarea-and-result">
+            <textarea
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              placeholder="Paste your text here to summarize..."
+              className="summarization-textarea"
+              rows="10"
+            ></textarea>
+            <div className="result-area">
+              {summary ? (
+                <div className="summary-result">
+                  <h3>Summary:</h3>
+                  <p>{summary}</p>
+                </div>
+              ) : (
+                <p className="placeholder-text">You will see your results here</p>
+              )}
+            </div>
+          </div>
           <div className="file-upload">
             <label htmlFor="pdf-upload" className="file-upload-label">
               Upload PDF
@@ -76,12 +88,6 @@ const Summarization = () => {
             {isLoading ? 'Summarizing...' : 'Summarize'}
           </button>
         </form>
-        {summary && (
-          <div className="summary-result">
-            <h3>Summary:</h3>
-            <p>{summary}</p>
-          </div>
-        )}
       </div>
     </div>
   );
