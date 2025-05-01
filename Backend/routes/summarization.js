@@ -1,15 +1,15 @@
 const express = require('express');
-const multer = require('multer');
-const { summarizeText, extractPdfText } = require('../controllers/summarizerController');
-
 const router = express.Router();
-const upload = multer(); // in-memory storage for PDFs
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 
-// For summarizing raw text
-router.post('/summarize', summarizeText);
+const {
+  extractPdfText,
+  summarizeText
+} = require('../controllers/summarizationController');
 
-// For extracting text from PDF
 router.post('/extract-pdf-text', upload.single('file'), extractPdfText);
+router.post('/summarize', summarizeText);
 
 module.exports = router;
 

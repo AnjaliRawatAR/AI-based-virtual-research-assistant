@@ -18,6 +18,7 @@ const Summarization = () => {
         body: JSON.stringify({ text }),
       });
       const data = await response.json();
+      console.log('Summary received:', data.summary);
       setSummary(data.summary);
     } catch (error) {
       console.error('Error summarizing text:', error);

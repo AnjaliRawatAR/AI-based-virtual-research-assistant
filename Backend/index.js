@@ -5,6 +5,8 @@ const cors = require('cors');
 
 const authRoutes = require('./routes/auth');
 const searchRoutes = require('./routes/search');
+const summarizationRoutes = require('./routes/summarization');
+
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -22,6 +24,7 @@ mongoose.connect(process.env.MONGO_URI, {
 // Mount routes
 app.use('/auth', authRoutes);
 app.use('/search', searchRoutes);
+app.use('/', summarizationRoutes);
 
 // Start server
 app.listen(PORT, () => {
