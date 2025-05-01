@@ -3,25 +3,18 @@ const multer = require('multer');
 const pdf = require('pdf-parse');
 const natural = require('natural');
 const { removeStopwords } = require('stopword');
-const path = require('path');
 const fs = require('fs');
-const cors = require('cors');
 
-const app = express();
-const PORT = 8000;
+const router = express.Router();
 
 // Configure multer for file uploads
 const upload = multer({ dest: 'uploads/' });
-
-// Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cors());
 
 // Ensure upload directory exists
 if (!fs.existsSync('uploads')) {
   fs.mkdirSync('uploads');
 }
+console.log('Highlight routes mounted at /api/highlights');
 
 // Helper functions
 function preprocessText(text) {
@@ -34,31 +27,6 @@ function preprocessText(text) {
     const filteredWords = removeStopwords(words);
     return filteredWords.join(' ');
   });
-}
-
-function scoreSentences(sentences) {
-  const wordFreq = {};
-  sentences.forEach(sentence => {
-    const words = sentence.split(/\s+/);
-    words.forEach(word => {
-      if (word.length > 0) {
-        wordFreq[word] = (wordFreq[word] || 0) + 1;
-      }
-    });
-  });
-
-  const sentenceScores = sentences.map(sentence => {
-    const words = sentence.split(/\s+/);
-    let score = 0;
-    words.forEach(word => {
-      if (word in wordFreq) {
-        score += wordFreq[word];
-      }
-    });
-    return { sentence, score };
-  });
-
-  return sentenceScores;
 }
 
 function extractHighlights(text, numHighlights = 5) {
@@ -97,7 +65,7 @@ function extractHighlights(text, numHighlights = 5) {
 }
 
 // API Endpoint for text-based highlights
-app.post('/extract-key-highlights', async (req, res) => {
+router.post('/extract-key-highlights', async (req, res) => {
   try {
     const { text } = req.body;
 
@@ -117,7 +85,7 @@ app.post('/extract-key-highlights', async (req, res) => {
 });
 
 // API Endpoint for PDF extraction
-app.post('/extract-key-highlights-pdf', upload.single('file'), async (req, res) => {
+router.post('/extract-key-highlights-pdf', upload.single('file'), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'PDF file is required' });
@@ -149,7 +117,4 @@ app.post('/extract-key-highlights-pdf', upload.single('file'), async (req, res) 
   }
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+module.exports = router;

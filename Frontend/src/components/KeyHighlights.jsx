@@ -14,19 +14,23 @@ const KeyHighlights = () => {
     setIsLoading(true);
     console.log('Extract Highlights triggered with text:', text); // Debugging log
     try {
-      const response = await fetch('http://localhost:8000/extract-key-highlights', {
+      // const response = await fetch('http://localhost:8000/extract-key-highlights', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ text }),
+      const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/highlights/extract-key-highlights`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text }),
       });
-
+  
       console.log('Response status:', response.status); // Debugging log
       if (!response.ok) {
         const errorData = await response.json();
         console.error('Error response from server:', errorData); // Debugging log
         throw new Error(errorData.error || 'Failed to extract highlights');
       }
-
+  
       const data = await response.json();
       console.log('Highlights data received:', data); // Debugging log
       setHighlights(
@@ -34,11 +38,23 @@ const KeyHighlights = () => {
           ? data.highlights.split('\n\n').filter(h => h.trim() !== '')
           : []
       );
-    } catch (error) {
-      console.error('Error extracting highlights:', error); // Debugging log
-      setError(error.message || 'Failed to extract highlights');
-      setHighlights([]); // Clear highlights on error
-    } finally {
+    // } catch (error) {
+    //   console.error('Error extracting highlights:', error); // Debugging log
+    //   setError(error.message || 'Failed to extract highlights');
+    //   setHighlights([]); // Clear highlights on error
+    // } 
+  } catch (error) {
+    let errorMessage = 'Failed to extract highlights';
+    if (error.name === 'SyntaxError') {
+      errorMessage = 'Received invalid response from server';
+    } else if (error.message) {
+      errorMessage = error.message;
+    }
+    setError(errorMessage);
+    console.error('Full error:', error);
+    setHighlights([]); // Clear highlights on error
+  }
+    finally {
       setIsLoading(false);
       console.log('Extract Highlights process completed'); // Debugging log
     }
@@ -57,7 +73,10 @@ const KeyHighlights = () => {
       setIsLoading(true);
 
       try {
-        const response = await fetch('http://localhost:8000/extract-key-highlights-pdf', {
+        // const response = await fetch('http://localhost:8000/extract-key-highlights-pdf', {
+        //   method: 'POST',
+        //   body: formData,
+        const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/highlights/extract-key-highlights-pdf`, {
           method: 'POST',
           body: formData,
         });
@@ -79,12 +98,25 @@ const KeyHighlights = () => {
             ? data.highlights.split('\n\n').filter(h => h.trim() !== '')
             : []
         );
-      } catch (error) {
-        console.error('PDF processing error:', error); // Debugging log
-        setError(error.message || 'Failed to extract highlights from PDF');
-        setText(''); // Clear text on error
-        setHighlights([]); // Clear highlights on error
-      } finally {
+      // } catch (error) {
+      //   console.error('PDF processing error:', error); // Debugging log
+      //   setError(error.message || 'Failed to extract highlights from PDF');
+      //   setText(''); // Clear text on error
+      //   setHighlights([]); // Clear highlights on error
+      // } 
+    } catch (error) {
+      let errorMessage = 'Failed to extract highlights from PDF';
+      if (error.name === 'SyntaxError') {
+        errorMessage = 'Received invalid response from server';
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      setError(errorMessage);
+      console.error('Full error:', error);
+      setText(''); // Clear text on error
+      setHighlights([]); // Clear highlights on error
+    }
+      finally {
         setIsLoading(false);
         console.log('PDF processing completed'); // Debugging log
       }
