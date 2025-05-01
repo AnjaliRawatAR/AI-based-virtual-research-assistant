@@ -1,4 +1,76 @@
-.plagiarism-detector-container {
+.plagiarism-container {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 20px;
+  text-align: center;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  background-color: #f9faff;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+}
+
+.plagiarism-container h2 {
+  margin-bottom: 20px;
+  color: #003580;
+}
+
+input[type="file"] {
+  margin: 15px 0;
+  font-size: 16px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #005eff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button:disabled {
+  background-color: #a0c3ff;
+  cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+  background-color: #0041c2;
+}
+
+.circle-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.circular-progress {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: conic-gradient(#005eff 70%, #d4e3ff 70%);
+  box-shadow: 0 0 10px rgba(0, 89, 255, 0.2);
+}
+
+.circle-inner {
+  width: 130px;
+  height: 130px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: 700;
+  color: #005eff;
+  box-shadow: inset 0 0 5px rgba(0, 89, 255, 0.1);
+}
+
+/* .plagiarism-detector-container {
   margin: 2rem auto;
   padding: 1.5rem;
   background-color: #f9f9f9;
@@ -37,4 +109,4 @@
 .plagiarism-report p {
   font-size: 1rem;
   color: #555;
-}
+} */
