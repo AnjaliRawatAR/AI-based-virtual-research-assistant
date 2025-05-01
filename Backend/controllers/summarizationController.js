@@ -1,3 +1,64 @@
+const fs = require('fs');
+const pdfParse = require('pdf-parse');
+const axios = require('axios');
+
+// ✅ PDF Text Extraction using pdf-parse
+exports.extractPdfText = async (req, res) => {
+  try {
+    const file = req.file;
+    if (!file) {
+      console.log('❌ No file uploaded');
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+
+    const dataBuffer = fs.readFileSync(file.path);
+    const data = await pdfParse(dataBuffer);
+
+    console.log('✅ PDF text extracted successfully');
+    res.json({ extractedText: data.text });
+  } catch (err) {
+    console.error('❌ Error during PDF extraction:', err);
+    res.status(500).json({ error: 'Failed to extract PDF text' });
+  }
+};
+
+// ✅ Summarize text using Hugging Face API
+exports.summarizeText = async (req, res) => {
+  const { text } = req.body;
+
+  if (!text || text.trim().length === 0) {
+    console.log('❌ Empty or missing text');
+    return res.status(400).json({ error: 'Text is required' });
+  }
+
+  try {
+    const HF_API_TOKEN = process.env.HF_API_KEY;
+    if (!HF_API_TOKEN) {
+      return res.status(500).json({ error: 'Missing Hugging Face API key in .env' });
+    }
+
+    const modelEndpoint = 'https://api-inference.huggingface.co/models/facebook/bart-large-cnn';
+
+    const response = await axios.post(
+      modelEndpoint,
+      { inputs: text },
+      {
+        headers: {
+          Authorization: `Bearer ${HF_API_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    const summary = response.data[0]?.summary_text || 'No summary returned';
+    console.log('✅ Summary generated successfully');
+    res.json({ summary });
+  } catch (err) {
+    console.error('❌ Error during Hugging Face summarization:', err.response?.data || err.message);
+    res.status(500).json({ error: 'Failed to summarize text using Hugging Face' });
+  }
+};
+
 // const fs = require('fs');
 // const pdfParse = require('pdf-parse');
 // const axios = require('axios');
@@ -63,58 +124,60 @@
 //   }
 // };
 
-const pdfParse = require('pdf-parse');
-const { GoogleGenerativeAI } = require('@google/generative-ai');
-const fs = require('fs');
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-console.log('🔐 API Key loaded:', process.env.GEMINI_API_KEY);
+//different approach using the new gemini-pro model and google generative ai package
+// const pdfParse = require('pdf-parse');
+// const { GoogleGenerativeAI } = require('@google/generative-ai');
+// const fs = require('fs');
+
+// const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+// console.log('🔐 API Key loaded:', process.env.GEMINI_API_KEY);
 
 
-exports.extractPdfText = async (req, res) => {
-  try {
-    const file = req.file;
-    if (!file) {
-      console.log('❌ No file received in request');
-      return res.status(400).json({ error: 'No file uploaded' });
-    }
+// exports.extractPdfText = async (req, res) => {
+//   try {
+//     const file = req.file;
+//     if (!file) {
+//       console.log('❌ No file received in request');
+//       return res.status(400).json({ error: 'No file uploaded' });
+//     }
 
-    const dataBuffer = fs.readFileSync(file.path);
-    const data = await pdfParse(dataBuffer);
+//     const dataBuffer = fs.readFileSync(file.path);
+//     const data = await pdfParse(dataBuffer);
 
-    console.log('✅ PDF text extracted successfully');
-    res.json({ extractedText: data.text });
-  } catch (err) {
-    console.error('❌ Error during PDF extraction:', err);
-    res.status(500).json({ error: 'Failed to extract PDF text' });
-  }
-};
+//     console.log('✅ PDF text extracted successfully');
+//     res.json({ extractedText: data.text });
+//   } catch (err) {
+//     console.error('❌ Error during PDF extraction:', err);
+//     res.status(500).json({ error: 'Failed to extract PDF text' });
+//   }
+// };
 
-exports.summarizeText = async (req, res) => {
-  try {
-    const { text } = req.body;
+// exports.summarizeText = async (req, res) => {
+//   try {
+//     const { text } = req.body;
 
-    if (!text || text.trim().length === 0) {
-      console.log('❌ Empty or missing text');
-      return res.status(400).json({ error: 'Text is required' });
-    }
+//     if (!text || text.trim().length === 0) {
+//       console.log('❌ Empty or missing text');
+//       return res.status(400).json({ error: 'Text is required' });
+//     }
 
-    console.log('📩 Text received (first 200 chars):', text.slice(0, 200));
+//     console.log('📩 Text received (first 200 chars):', text.slice(0, 200));
 
-    // ✅ Use the correct name for v1beta: just 'gemini-pro'
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+//     // ✅ Use the correct name for v1beta: just 'gemini-pro'
+//     const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
 
-    // ✅ Must pass array of strings
-    const result = await model.generateContent([`Summarize the following:\n${text}`]);
-    const response = await result.response;
-    const summary = response.text();
+//     // ✅ Must pass array of strings
+//     const result = await model.generateContent([`Summarize the following:\n${text}`]);
+//     const response = await result.response;
+//     const summary = response.text();
 
-    console.log('✅ Summary generated:\n', summary);
-    res.json({ summary });
+//     console.log('✅ Summary generated:\n', summary);
+//     res.json({ summary });
 
-  } catch (err) {
-    console.error('❌ Error during Gemini summarization:\n', err);
-    res.status(500).json({ error: 'Failed to summarize text' });
-  }
-};
+//   } catch (err) {
+//     console.error('❌ Error during Gemini summarization:\n', err);
+//     res.status(500).json({ error: 'Failed to summarize text' });
+//   }
+// };
 

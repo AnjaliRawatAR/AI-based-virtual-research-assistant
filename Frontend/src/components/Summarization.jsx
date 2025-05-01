@@ -12,7 +12,7 @@ const Summarization = () => {
     setIsLoading(true);
     try {
       // TODO: Replace with actual API call
-      const response = await fetch('http://localhost:8000/summarize', {
+      const response = await fetch('http://localhost:8000/summarize/summarize', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text }),
@@ -37,7 +37,7 @@ const Summarization = () => {
 
       try {
         // TODO: Replace with actual API endpoint for PDF processing
-        const response = await fetch('http://localhost:8000/extract-pdf-text', {
+        const response = await fetch('http://localhost:8000/summarize/extract-pdf-text', {
           method: 'POST',
           body: formData,
         });

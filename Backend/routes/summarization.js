@@ -8,10 +8,28 @@ const {
   summarizeText
 } = require('../controllers/summarizationController');
 
+// Route to extract text from uploaded PDF
 router.post('/extract-pdf-text', upload.single('file'), extractPdfText);
+
+// Route to summarize plain text
 router.post('/summarize', summarizeText);
 
 module.exports = router;
+
+// const express = require('express');
+// const router = express.Router();
+// const multer = require('multer');
+// const upload = multer({ dest: 'uploads/' });
+
+// const {
+//   extractPdfText,
+//   summarizeText
+// } = require('../controllers/summarizationController');
+
+// router.post('/extract-pdf-text', upload.single('file'), extractPdfText);
+// router.post('/summarize', summarizeText);
+
+// module.exports = router;
 
 /*
 const express = require('express');
