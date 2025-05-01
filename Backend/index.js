@@ -5,6 +5,8 @@ const cors = require('cors');
 
 const authRoutes = require('./routes/auth');
 const searchRoutes = require('./routes/search');
+const summarizationRoutes = require('./routes/summarization');
+
 const highlightRoutes = require('./routes/highlight'); // Updated import
 
 const app = express();
@@ -27,7 +29,6 @@ mongoose.connect(process.env.MONGO_URI, {
 // Mount routes
 app.use('/auth', authRoutes);
 app.use('/search', searchRoutes);
-app.use('/api/highlights', highlightRoutes); // Properly mount the highlight route
 
 // Start server
 app.listen(PORT, () => {
