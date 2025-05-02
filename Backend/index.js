@@ -8,6 +8,8 @@ const searchRoutes = require('./routes/search');
 const summarizationRoutes = require('./routes/summarization');
 const plagiarismRoutes = require('./routes/plagiarism');
 // const keyHighlightsRoutes = require('./routes/keyHighlights');
+const keyHighlightsRoutes = require('./routes/keyHighlights');
+
 
 
 const app = express();
@@ -28,6 +30,7 @@ app.use('/auth', authRoutes);
 app.use('/search', searchRoutes);
 app.use('/summarize', summarizationRoutes);
 app.use('/plagiarism', plagiarismRoutes);
+app.use('/highlights', keyHighlightsRoutes);
 // app.use('/key-highlights', keyHighlightsRoutes);
 
 // Start server
